@@ -1,0 +1,73 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+	<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
+		<h2 class="text-2xl font-bold mb-6 text-center">Todo List</h2>
+		<div class="mb-4">
+			<input [(ngModel)]="newTaskTitle" placeholder="Task title"
+			       class="w-full p-2 border border-gray-300 rounded-md"/>
+			<textarea [(ngModel)]="newTaskDescription" placeholder="Task description (optional)"
+			          class="w-full p-2 border border-gray-300 rounded-md mt-2"></textarea>
+			<button (click)="addTask()"
+			        class="w-full bg-blue-500 text-white py-2 px-4 rounded-md mt-2 hover:bg-blue-600">Add Task
+			</button>
+		</div>
+		<div *ngIf="pendingTasks.length > 0" @fadeHeight class="mb-4">
+			<h3 class="text-xl font-bold mb-2">Pending Tasks</h3>
+			<ul>
+				<li *ngFor="let task of pendingTasks" @fadeSlide
+				    class="relative flex flex-col items-start justify-between p-2 mb-2 bg-white rounded shadow-md transition-all hover:shadow-lg">
+					<div class="flex items-center w-full">
+						<label class="flex items-center">
+							<input type="checkbox" (change)="toggleTaskCompletion(task)" class="hidden">
+							<span class="custom-checkbox w-5 h-5 border border-gray-300 rounded-sm flex items-center justify-center mr-2">
+                <svg *ngIf="task.completed" class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </span>
+						</label>
+						<span class="flex-1">{{ task.title }}</span>
+						<button (click)="deleteTask(task)" class="ml-2 text-red-500 hover:underline">Delete</button>
+					</div>
+					<button (click)="toggleExpandTask(task)" class="mt-2 text-blue-500 hover:underline">More Info
+					</button>
+					<div [@expandCollapse]="task.expanded ? 'expanded' : 'collapsed'"
+					     class="mt-2 p-2 border rounded bg-gray-50 w-full">
+						<h4 class="text-lg font-bold">{{ task.title }}</h4>
+						<p>{{ task.description }}</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div *ngIf="completedTasks.length > 0" @fadeHeight>
+			<h3 class="text-xl font-bold mb-2">Completed Tasks</h3>
+			<ul>
+				<li *ngFor="let task of completedTasks" @fadeSlide
+				    class="relative flex flex-col items-start justify-between p-2 mb-2 bg-white rounded shadow-md transition-all hover:shadow-lg">
+					<div class="flex items-center w-full">
+						<label class="flex items-center">
+							<input type="checkbox" checked (change)="toggleTaskCompletion(task)" class="hidden">
+							<span class="custom-checkbox w-5 h-5 border border-gray-300 rounded-sm flex items-center justify-center mr-2">
+                <svg *ngIf="task.completed" class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </span>
+						</label>
+						<span class="flex-1">{{ task.title }}</span>
+						<button (click)="deleteTask(task)" class="ml-2 text-red-500 hover:underline">Delete</button>
+					</div>
+					<button (click)="toggleExpandTask(task)" class="mt-2 text-blue-500 hover:underline">More Info
+					</button>
+					<div [@expandCollapse]="task.expanded ? 'expanded' : 'collapsed'"
+					     class="mt-2 p-2 border rounded bg-gray-50 w-full">
+						<h4 class="text-lg font-bold">{{ task.title }}</h4>
+						<p class="break-words">{{ task.description }}</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<button (click)="logout()" class="w-full bg-red-500 text-white py-2 px-4 rounded-md mt-4 hover:bg-red-600">
+			Logout
+		</button>
+	</div>
+</div>
